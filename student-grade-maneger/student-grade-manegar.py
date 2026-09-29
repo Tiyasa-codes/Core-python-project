@@ -2,6 +2,7 @@ students={}
 def add_student(students):
     while True:
      name=input("Enter student name: ")
+     name = name.strip()
      name=name.title()
      if name in students:
        print("Student already exists")
@@ -30,7 +31,6 @@ def add_student(students):
         grade="D"
       else:
         grade="F"
-      
       break
      except ValueError:
       print("Enter an integer")
@@ -41,13 +41,17 @@ def add_student(students):
       }
     print("Student successfully added!!")  
 def view_student(students):
-   for name,data in students.items():
+   if not students:
+     print("No students added yet")
+   else:
+     for name,data in students.items():
       print("Student","->",name)
       print("Marks","::",data["marks"])
       print("Grade","::",data["grade"])
       print("----------------")
 def search_student(students):
    name=input("Enter the student name you want to search->")
+   name=name.strip()
    name=name.title()
    if name in students:
       print(name,"::",students[name]["marks"],"::",students[name]["grade"])
@@ -58,24 +62,25 @@ def calculate_average(students):
       print("No students added yet")
    else:
     total=0
-    ct=0
-    for name,data in students.items():
+    count=0
+    for _,data in students.items():
       total+=data["marks"]
-      ct+=1
-    avg=total/ct
+      count+=1
+    avg=total/count
     print("Average marks is",avg)
 def highest_marks(students):
    if not students:
-      print("List is empty")
+      print("No students added yet")
    else:
-     high=0
+     highest=-1
      for name,data in students.items():
-      if(data["marks"]>high):
-         high=data["marks"]
-         na=name
-     print("Highest marks is",na,"::",high)
-def delete_students(students):
+      if(data["marks"]>highest):
+         highest=data["marks"]
+         student=name
+     print("Highest marks is",student,"::",highest)
+def delete_student(students):
    name=input("Enter the student name you want to delete->")
+   name=name.strip()
    name=name.title()
    if name in students:
       del students[name]
@@ -83,8 +88,15 @@ def delete_students(students):
    else:
       print(" student name doesn't exist")
 def show_menu():
-   choice=int(input("enter your choice:1->Add student 2->View student 3->calculate average 4->highest marks 5->delete student 6->search student 7->exit->"))
-   return choice
+    print("1 -> Add student")
+    print("2 -> View student")
+    print("3 -> Calculate average")
+    print("4 -> Highest marks")
+    print("5 -> Delete student")
+    print("6 -> Search student")
+    print("7 -> Exit")
+    choice = int(input("Enter your choice: "))
+    return choice
 while True:
  try:
     choice=show_menu()
@@ -97,7 +109,7 @@ while True:
     elif(choice==4):
       highest_marks(students)
     elif(choice==5):
-      delete_students(students)
+      delete_student(students)
     elif(choice==6):
       search_student(students)
     elif(choice==7):
